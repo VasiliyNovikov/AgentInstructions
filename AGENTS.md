@@ -17,7 +17,7 @@ For **non-trivial changes** (anything beyond typos or one-line fixes), follow th
 1. **Draft a plan** describing the change: what files are affected, what will be added/modified, and why.
 2. **Launch a `code-review` subagent** to critique the plan for correctness, completeness, adherence to project conventions, and potential risks.
 3. **Refine the plan** based on the review feedback.
-4. Repeat steps 2–3 until the review passes with no actionable issues, or a maximum of **5 agent iterations** is reached.
+4. Repeat steps 2–3 until the review passes with no actionable issues, or a maximum of **5 review cycles** (each cycle = one review + one refinement) is reached.
 5. **Present the plan to the user for approval.**
    - If the user **approves**, proceed to Phase 2.
    - If the user **suggests changes**, incorporate the feedback and restart Phase 1 from step 1.
@@ -29,7 +29,7 @@ Each outer iteration consists of two subphases:
 #### Subphase A — Implement + Test (inner loop)
 
 1. **Implement** the changes according to the approved plan (or fix issues from the previous review).
-2. **Build and run tests** (`dotnet build && dotnet test --no-build`).
+2. **Build and run tests**.
 3. If tests fail, **fix** the failures and repeat from step 2.
 4. Continue until all tests pass. This inner loop has no fixed iteration cap but must make progress on each iteration.
 
@@ -46,6 +46,10 @@ Repeat the outer loop (Subphase A → Subphase B) up to **5 iterations**. If iss
 8. After the agent loop completes (review passes or iteration cap reached), **present the changes to the user for approval.**
    - If the user **approves**, the workflow is complete.
    - If the user **suggests changes**, incorporate the feedback and restart Phase 2 from Subphase A step 1.
+
+### Definition of "actionable issues"
+
+An issue is **actionable** if it is a bug, logic error, security vulnerability, missed requirement, convention violation, or style inconsistency. Optional optimizations and "consider doing X" recommendations are **not** actionable and should not block the workflow, but should be collected and presented to the user at the Human Review Gate for consideration.
 
 ### Loop exit rules
 
