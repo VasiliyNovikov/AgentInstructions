@@ -15,7 +15,7 @@ For **non-trivial changes** (anything beyond typos or one-line fixes), follow th
 ### Phase 1 — Plan + Review
 
 1. **Draft a plan** describing the change: what files are affected, what will be added/modified, and why.
-2. **Launch a `code-review` subagent** to critique the plan for correctness, completeness, adherence to project conventions, and potential risks.
+2. **Perform a code review using a sub-agent** to critique the plan for correctness, completeness, adherence to project conventions, and potential risks.
 3. **Refine the plan** based on the review feedback.
 4. Repeat steps 2–3 until the review passes with no actionable issues, or a maximum of **5 review cycles** (each cycle = one review + one refinement) is reached.
 5. **Present the plan to the user for approval.**
@@ -35,7 +35,7 @@ Each outer iteration consists of two subphases:
 
 #### Subphase B — Review
 
-5. **Launch a `code-review` subagent** to review the implementation diff for bugs, convention violations, and missed edge cases.
+5. **Perform a code review using a sub-agent** to review the implementation diff for bugs, convention violations, and missed edge cases.
 6. If the review surfaces **no actionable issues**, the workflow is complete — exit.
 7. If the review finds issues, loop back to **Subphase A** (step 1) to address them.
 
@@ -78,7 +78,7 @@ An issue is **actionable** if it is a bug, logic error, security vulnerability, 
 ## Documentation Rules
 
 **After every change, feature, or fix:**
-- Review and update `AGENTS.md` and `README.md` if the change affects documented behavior, conventions, architecture, CI, or public-facing information.
+- Review whether `AGENTS.md` and `README.md` need updating. If the change affects documented behavior, conventions, architecture, CI, or public-facing information, update them accordingly.
 - Check if dependency manifests need updating.
 
 This is mandatory, not optional.
