@@ -8,6 +8,50 @@ This file contains universal agent instructions shared across all repositories. 
 - Do not fix unrelated bugs or broken tests. Stay focused on the task at hand.
 - Always validate that changes don't break existing behavior by building and running tests.
 
+## Development Workflow
+
+For **non-trivial changes** (anything beyond typos or one-line fixes), follow this mandatory two-phase workflow. Trivial changes (typos, single-line fixes) may skip directly to implementation.
+
+### Phase 1 — Plan + Review
+
+1. **Draft a plan** describing the change: what files are affected, what will be added/modified, and why.
+2. **Launch a `code-review` subagent** to critique the plan for correctness, completeness, adherence to project conventions, and potential risks.
+3. **Refine the plan** based on the review feedback.
+4. Repeat steps 2–3 until the review passes with no actionable issues, or a maximum of **5 agent iterations** is reached.
+5. **Present the plan to the user for approval.**
+   - If the user **approves**, proceed to Phase 2.
+   - If the user **suggests changes**, incorporate the feedback and restart Phase 1 from step 1.
+
+### Phase 2 — Implement + Test + Review (up to 5 outer iterations)
+
+Each outer iteration consists of two subphases:
+
+#### Subphase A — Implement + Test (inner loop)
+
+1. **Implement** the changes according to the approved plan (or fix issues from the previous review).
+2. **Build and run tests** (`dotnet build && dotnet test --no-build`).
+3. If tests fail, **fix** the failures and repeat from step 2.
+4. Continue until all tests pass. This inner loop has no fixed iteration cap but must make progress on each iteration.
+
+#### Subphase B — Review
+
+5. **Launch a `code-review` subagent** to review the implementation diff for bugs, convention violations, and missed edge cases.
+6. If the review surfaces **no actionable issues**, the workflow is complete — exit.
+7. If the review finds issues, loop back to **Subphase A** (step 1) to address them.
+
+Repeat the outer loop (Subphase A → Subphase B) up to **5 iterations**. If issues remain after 5 iterations, stop and report the unresolved items to the user.
+
+#### Human Review Gate
+
+8. After the agent loop completes (review passes or iteration cap reached), **present the changes to the user for approval.**
+   - If the user **approves**, the workflow is complete.
+   - If the user **suggests changes**, incorporate the feedback and restart Phase 2 from Subphase A step 1.
+
+### Loop exit rules
+
+- **Exit early** as soon as the review passes with no actionable findings and all tests pass. Do not iterate unnecessarily.
+- Each iteration must make measurable progress. If an iteration produces no changes, exit the loop and escalate to the user.
+
 ## Git Workflow Rules
 
 - **Never commit directly to the default branch.** All changes must go through a separate feature/fix branch and be merged via a pull request.
