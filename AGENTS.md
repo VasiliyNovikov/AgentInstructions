@@ -12,6 +12,8 @@ This file contains universal agent instructions shared across all repositories. 
 
 For **non-trivial changes** (anything beyond typos or one-line fixes), follow this mandatory two-phase workflow. Trivial changes (typos, single-line fixes) may skip directly to implementation.
 
+> **Sub-agent model rule:** Always invoke code review sub-agents with the same model as the root agent to ensure review quality matches the planning/implementation quality.
+
 ### Phase 1 — Plan + Review
 
 1. **Draft a plan** describing the change: what files are affected, what will be added/modified, and why.
