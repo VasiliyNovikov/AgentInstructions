@@ -70,6 +70,7 @@ An issue is **actionable** if it is a bug, logic error, security vulnerability, 
 - Enforce code style at build time when possible.
 - Only comment code that needs clarification. Do not add obvious or redundant comments.
 - Prefer ecosystem tools (package managers, refactoring tools, linters) over manual changes to reduce mistakes.
+- **Avoid duplicated code.** Before adding new code, check for existing functionality that overlaps — both within the new code itself and against the existing codebase. Deduplicate by extracting shared logic into reusable functions, methods, or modules when reasonable.
 
 ## Testing
 
