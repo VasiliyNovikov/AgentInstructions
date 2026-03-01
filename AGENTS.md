@@ -37,7 +37,7 @@ Each outer iteration consists of two subphases:
 
 #### Subphase B — Review
 
-5. **Perform a code review using a sub-agent** to review the implementation diff for bugs, convention violations, and missed edge cases.
+5. **Perform a code review using a sub-agent** to review the implementation diff for bugs, convention violations, and missed edge cases. Include surrounding context (direct callers, interfaces, importing files) and describe the change intent per the Code Review Standards section.
 6. If the review surfaces **no actionable issues**, the workflow is complete — exit.
 7. If the review finds issues, loop back to **Subphase A** (step 1) to address them.
 
@@ -51,12 +51,31 @@ Repeat the outer loop (Subphase A → Subphase B) up to **5 iterations**. If iss
 
 ### Definition of "actionable issues"
 
-An issue is **actionable** if it is a bug, logic error, security vulnerability, missed requirement, convention violation, or style inconsistency. Optional optimizations and "consider doing X" recommendations are **not** actionable and should not block the workflow, but should be collected and presented to the user at the Human Review Gate for consideration.
+An issue is **actionable** if it is a bug, logic error, security vulnerability, missed requirement, convention violation, style inconsistency, resource leak, concurrency defect, breaking API/compatibility change, performance regression, or missing test coverage for new or changed code paths. Optional optimizations and "consider doing X" recommendations are **not** actionable and should not block the workflow, but should be collected and presented to the user at the Human Review Gate for consideration.
 
 ### Loop exit rules
 
 - **Exit early** as soon as the review passes with no actionable findings and all tests pass. Do not iterate unnecessarily.
 - Each iteration must make measurable progress. If an iteration produces no changes, exit the loop and escalate to the user.
+
+## Code Review Standards
+
+When performing a code review (in any phase), evaluate against these dimensions:
+
+- **Correctness** — Verify logic, edge cases, off-by-one errors, null handling, and incorrect assumptions.
+- **Security** — Check for injection, auth bypass, data exposure, and secrets in code.
+- **Error & Resource Handling** — Confirm no swallowed errors, unhandled exceptions, or leaked resources (connections, file handles, memory).
+- **API & Compatibility** — Validate no breaking changes to public APIs, config formats, or data schemas. Verify consistent naming and documented behavior.
+- **Concurrency & Performance** — Check for race conditions, deadlocks, unnecessary allocations, and algorithmic inefficiency.
+- **Test Adequacy** — Verify new or changed code paths have corresponding test coverage.
+
+**Proportionality:** For changes under 20 lines or affecting a single function, focus the review on correctness, security, error handling, and convention adherence only. Apply the full checklist to larger changes.
+
+**Context requirement:** When invoking the review sub-agent, always include:
+1. The diff or changed files.
+2. Direct callers, implemented interfaces, and files importing changed symbols.
+3. Project-specific conventions from the repository's own `AGENTS.md` (not this base file).
+4. A description of the change's intent so the reviewer can validate correctness against it.
 
 ## Git Workflow Rules
 
