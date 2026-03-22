@@ -10,7 +10,7 @@ This file contains universal agent instructions shared across all repositories. 
 
 ## Development Workflow
 
-For **non-trivial changes** (anything beyond typos or one-line fixes), follow this mandatory two-phase workflow. Trivial changes (typos, single-line fixes) may skip directly to implementation.
+For **non-trivial changes** (anything beyond typos or one-line fixes), follow this mandatory two-phase workflow. **Before implementing any change, always present a complete user-visible plan and obtain approval.** **After implementing any change, always present the actual changes for human review and approval before considering the task complete or running `git commit`, `git push`, or `git merge`.** Trivial changes (typos, single-line fixes) may use an abbreviated planning path that skips the full Phase 1 sub-agent review/refinement loop unless additional review is needed, but they must still show the full plan contents listed in Phase 1 step 5 before implementation and still pass through the Human Review Gate after implementation.
 
 > **Sub-agent model rule:** Always invoke code review sub-agents with the same model as the root agent to ensure review quality matches the planning/implementation quality.
 
@@ -20,7 +20,15 @@ For **non-trivial changes** (anything beyond typos or one-line fixes), follow th
 2. **Perform a code review using a sub-agent** to critique the plan for correctness, completeness, adherence to project conventions, and potential risks.
 3. **Refine the plan** based on the review feedback.
 4. Repeat steps 2–3 until the review passes with no actionable issues, or a maximum of **5 review cycles** (each cycle = one review + one refinement) is reached.
-5. **Present the plan to the user for approval.**
+5. **Present the full refined plan to the user for approval before implementation starts.** The plan shown to the user must include:
+   - affected files
+   - intended additions and modifications
+   - rationale for the change
+   - validation approach
+   - current plan-review status
+   - any unresolved actionable issues if the review loop stopped after reaching the 5-cycle cap
+
+   After presenting it:
    - If the user **approves**, proceed to Phase 2.
    - If the user **suggests changes**, incorporate the feedback and restart Phase 1 from step 1.
 
@@ -38,15 +46,15 @@ Each outer iteration consists of two subphases:
 #### Subphase B — Review
 
 5. **Perform a code review using a sub-agent** to review the implementation diff for bugs, convention violations, and missed edge cases. Include surrounding context (direct callers, interfaces, importing files) and describe the change intent per the Code Review Standards section.
-6. If the review surfaces **no actionable issues**, the workflow is complete — exit.
+6. If the review surfaces **no actionable issues**, proceed to the Human Review Gate.
 7. If the review finds issues, loop back to **Subphase A** (step 1) to address them.
 
 Repeat the outer loop (Subphase A → Subphase B) up to **5 iterations**. If issues remain after 5 iterations, stop and report the unresolved items to the user.
 
 #### Human Review Gate
 
-8. After the agent loop completes (review passes or iteration cap reached), **present the changes to the user for approval.**
-   - If the user **approves**, the workflow is complete.
+8. After the agent loop completes (review passes or iteration cap reached), **present the implemented changes to the user for review and approval.** This step is mandatory for every change, including trivial or abbreviated-path edits, and it must happen before the workflow is complete or any `git commit`, `git push`, or `git merge` action is taken.
+   - If the user **approves the changes**, the workflow is complete.
    - If the user **suggests changes**, incorporate the feedback and restart Phase 2 from Subphase A step 1.
 
 ### Definition of "actionable issues"
@@ -55,7 +63,7 @@ An issue is **actionable** if it is a bug, logic error, security vulnerability, 
 
 ### Loop exit rules
 
-- **Exit early** as soon as the review passes with no actionable findings and all tests pass. Do not iterate unnecessarily.
+- **Exit early from the agent review loop** as soon as the review passes with no actionable findings and all tests pass, then proceed to the Human Review Gate. The task is not complete until the user has reviewed and approved the implemented changes.
 - Each iteration must make measurable progress. If an iteration produces no changes, exit the loop and escalate to the user.
 
 ## Code Review Standards
@@ -80,7 +88,7 @@ When performing a code review (in any phase), evaluate against these dimensions:
 ## Git Workflow Rules
 
 - **Never commit directly to the default branch.** All changes must go through a separate feature/fix branch and be merged via a pull request.
-- **Always ask for user confirmation before running any `git commit`, `git push`, or `git merge` operation.** Do not execute these commands without explicit approval.
+- **Never run `git commit`, `git push`, or `git merge` until the user has reviewed and approved the implemented changes at the Human Review Gate, and then separately given explicit approval for the specific git operation.** Approval to run a git command does not replace review and approval of the changes themselves.
 - Write clear, concise commit messages describing what changed and why.
 
 ## Code Quality
