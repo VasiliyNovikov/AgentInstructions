@@ -38,7 +38,7 @@ This file defines universal instructions shared across repositories. Repository 
 
 ### EditorConfig
 
-- Before editing or creating a text file, resolve every applicable `.editorconfig` by searching from the file's directory upward. Include the file where top-level `root = true` is encountered, then stop; a `root` key inside a section does not stop discovery.
+- Before editing or creating a text file, resolve every applicable `.editorconfig` by searching from the file's directory upward through the repository root, then stop. Never inspect parent directories outside the repository. In a non-Git workspace, use the active project or workspace root as the boundary. Stop earlier after including a file with top-level `root = true`; a `root` key inside a section does not stop discovery.
 - Apply farther files before closer files. Within each file, process sections from top to bottom so later matching sections override earlier ones. Respect `unset` and apply only properties that resolve for the target file.
 - Treat resolved EditorConfig properties as mandatory project conventions for files in the approved scope. This includes applicable `charset`, `end_of_line`, `indent_style`, `indent_size`, `tab_width`, `trim_trailing_whitespace`, and `insert_final_newline` settings.
 - After editing, verify the actual result with an authoritative EditorConfig-aware checker or formatter when available. Otherwise inspect the resolved settings and file content or bytes directly, including the end-of-file state. Do not assume an editing tool preserved line endings, trailing whitespace, or the required final newline.
