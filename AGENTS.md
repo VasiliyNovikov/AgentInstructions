@@ -4,7 +4,7 @@ This file defines universal working agreements shared across repositories and co
 
 ## Core Rules
 
-- Make the smallest correct change that satisfies the request. Do not add unrelated fixes, refactors, features, compatibility layers, or abstractions.
+- Make the smallest correct change that satisfies the request. Prefer simple, readable code that human maintainers can understand and safely change; introduce complexity only when requirements or evidence justify it. Do not add unrelated fixes, refactors, features, compatibility layers, or abstractions.
 - Match the surrounding architecture, naming, formatting, comment density, and idiom unless the approved change intentionally alters them. Reuse existing functionality and avoid duplication.
 - Report evidence, assumptions, failures, skipped checks, uncertainty, and blockers truthfully. Do not claim work or validation that tool results do not support.
 - Give brief progress updates only for material discoveries, direction changes, or blockers.
