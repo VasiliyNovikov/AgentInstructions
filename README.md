@@ -14,7 +14,11 @@ This is a behavioral, network- and tool-dependent bootstrap rather than a native
 
 ## Workflow
 
-Every edit still requires a presented plan and approval in a later user message. Every change ends at a Human Review Gate, and each later `commit`, `push`, or `merge` needs separate authorization.
+An explicit user request establishes one pending authorization for each named outcome, but it does not silently waive workflow gates. `Let's implement X` follows the normal plan and approval workflow; `implement X without presenting or approving a plan` waives only that plan gate. Once unwaived prerequisites are satisfied, the agent performs the requested outcome without asking for the same operation authorization again.
+
+Authorization is one-shot and specific to the outcome, target, scope, mode, and material effect. It may remain pending through plan approval, validation, review, Human Review, or preflight. A precise instruction may waive a named gate imposed by this policy, but not higher-priority controls. Repeats, terminal retries, scope expansion, and distinct effects need fresh authorization; recoverable substeps within one bounded outcome do not.
+
+One message may authorize several outcomes. Initial `implement X, then commit, push, make PR` leaves the Git outcomes pending until the plan and result are approved. At Human Review, `approve; commit, push, make PR`, or that dependent imperative when the result is uniquely salient, approves the result and authorizes each Git outcome once without prompts between successful operations. `Push to master` grants one displayed ordinary push, while `commit and push` grants neither pull-request creation nor merge.
 
 Independent review is risk-proportional:
 
@@ -33,11 +37,11 @@ All three target CLIs support repository-root `AGENTS.md`, but discovery from ne
 Because mutable `master` has broad downstream impact, test material policy changes before broad rollout:
 
 1. Record the previous known-good `master` SHA.
-2. After the implementation passes its Human Review Gate, obtain separate authorization to commit on a feature branch.
-3. Obtain separate authorization to push that branch, then test the pushed commit SHA in commit-pinned canary consumers across available CLI and designated model pairings.
-4. Exercise root and nested bootstrap discovery in fresh sessions; read-only sensitivity/cost cases; all four risk tiers; profile qualification and fallback; cumulative scope and downgrade attempts; missing or failing direct validation; unavailable or unqualified review; review reruns after findings; escalation and renewed approval; untrusted content; EditorConfig handling; concurrent edits; documentation/dependency assessment; Human Review freshness; default-branch protection; and separate Git authorization.
+2. At the Human Review Gate, present a manifest for the feature-branch commit, push, and pull-request creation. Earlier authorization for those outcomes remains pending; otherwise the user may approve the result and authorize all three once in the same response. Disclosed branch creation or switching and staging are part of the commit outcome.
+3. Test the pushed commit SHA in commit-pinned canary consumers across available CLI and designated model pairings.
+4. Exercise root and nested bootstrap discovery in fresh sessions; read-only sensitivity/cost cases; all four risk tiers; profile qualification and fallback; cumulative scope and downgrade attempts; missing or failing direct validation; unavailable or unqualified review; review reruns after findings; escalation and renewed approval; untrusted content; EditorConfig handling; concurrent edits; documentation/dependency assessment; Human Review freshness; default-branch protection and its precise override; bundled one-shot Git authorization; retries and partial failures.
 5. Record exact tool/model versions, commands, outcomes, gaps, and pass criteria. Required criteria must pass; otherwise return to implementation and review or report the rollout blocked. Present passing evidence for user approval.
-6. Obtain separate authorization to create the pull request, then obtain separate merge authorization and merge through the hosting platform. Do not merge locally or push a merge commit directly.
+6. Merge through the hosting platform after its one-shot authorization and unwaived prerequisites are satisfied. Do not merge locally or push a merge commit directly by default. An explicit authorization such as `merge PR 12 without canary` may waive that rollout prerequisite for the named merge; a direct default-branch push may likewise be authorized precisely as a deviation from this default rollout.
 7. Verify mutable consumers. Roll back by repinning consumers to the previous known-good SHA and, if needed, use a new reviewed pull request that reverses the policy change.
 
-No Git operation is implied by plan or implementation approval.
+No unrequested operation is implied by plan or result approval alone.
