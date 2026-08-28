@@ -71,7 +71,7 @@ Present the refined plan and review status, then wait for approval of that displ
 - Treat warnings as failures. Do not suppress warnings, weaken tests, or alter expected outputs merely to manufacture success.
 - Self-review the complete diff for scope, correctness, security, failure and resource handling, contracts, compatibility, concurrency, performance, tests, documentation, dependencies, generated artifacts, and migrations.
 - Run the independent final-diff stage when required by the approved plan or effective tier. Re-run affected validation and review after fixes.
-- Delegate only sizeable, genuinely independent work. Keep agent count low, do not use subagents for routine double-checking, provide clear scope and evidence, isolate parallel writers with separate worktrees and ownership, and verify delegated results in the main context.
+- Delegate bounded, independent work whenever expected gains in quality, specialization, context isolation, or wall-clock speed outweigh coordination overhead. Parallelize distinct read-heavy exploration, review, testing, and analysis when useful; avoid duplicate work and overlapping writes, isolate parallel writers with separate worktrees and clear ownership, give each agent clear scope and evidence, and verify and reconcile results in the main context.
 
 ## Human Review Gate
 
