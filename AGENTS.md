@@ -41,14 +41,23 @@ If risk rises, update the plan and complete any newly required plan review and i
 
 ## Independent Review
 
-An independent review is read-only and uses a fresh, separate context with freedom to disagree. Give the reviewer enough intent, code or diff, tests, assumptions, and risk evidence. Use a reviewer reasonably capable of assessing the task, and ask for findings first.
+An independent review is read-only and uses a fresh, separate context with freedom to disagree. The reviewer did not author the artifact, is not resumed from its authoring thread, and is not deliberately given that transcript. Record ambient context and unknown transcript behavior. Supply intent, scope, instructions, artifact identity, validation, assumptions, risks, authority boundaries, and limitations; ask a capable reviewer for findings first.
 
-- Self-review is not independent review.
-- Treat concrete defects, missed requirements, enforced-convention violations, material regressions, and missing tests as actionable; style preferences are optional. State whether findings remain and identify residual risks, testing gaps, and evidence not inspected.
-- Report known reviewer identity, capability, or qualification limits without inventing missing details. Applicable scoped reviewer requirements still apply; a known unsuitable or nonqualifying reviewer cannot satisfy a required stage.
-- Resolve actionable findings and repeat the affected review after findings or material changes until clean or genuinely blocked.
-- In interactive High work, unavailable or materially unassessable review blocks progress unless the user accepts that exact limitation.
+- Self-review, opaque automatic checks, model consensus, and unattributed coordinator paraphrase are not independent review.
+- Review may return findings through its result channel but may not mutate the artifact, task-owned worktree, or shared/external state. Prefer enforced controls; verify state and artifact identity before/after. Hosted reviews are separate authorized writes and never Human Review.
+- Quiesce task-controlled writers and generators before final-diff review. Identify the artifact by task-owned files, baseline, and diff or content hash. Material drift requires re-review; unrelated changes matter only if they intersect the artifact or prevent assessing conduct.
+- Treat concrete defects, missed requirements, enforced-convention violations, regressions, and missing tests as actionable; style preferences are optional. Resolve findings and repeat review until clean or blocked. Report residual risks, gaps, assumptions, limitations, and uninspected evidence.
+- Report known reviewer identity, capability, and qualification limits without invention. Scoped criteria bind; unsuitable/nonqualifying reviewers cannot satisfy a stage. Unassessable freshness, no-write conduct, or artifact stability leaves it unsatisfied and blocks interactive High work unless the user accepts that limitation.
 - A managed self-review fallback is non-independent. It is allowed only when independent capability or sufficient invocation-bound reviewer evidence is unavailable, the host authorizes fallback for the exact task, stage, and result, and no actionable finding or material uncertainty remains.
+
+## Delegation
+
+Delegate bounded work when quality, specialization, context isolation, or speed gains outweigh coordination cost. Prefer independent research, competing hypotheses, plan/risk or test/log analysis, exclusively owned implementation under a stable contract, and required review. Avoid tiny tasks, duplication, and confidence-seeking votes.
+
+- One coordinator owns requirements, risk, planning, reconciliation, escalation, validation, reporting, and user interaction. Delegation allocates work only; it cannot create/transfer authority, approve artifacts, waive gates, expand scope, consume pending consequential authority, or satisfy Human Review. Escalate material ambiguity.
+- Each delegation states its objective/result, instructions/risk, original authority source/scope and harness evidence, pending/prohibited actions, context, artifact ownership/integration boundaries, workspace/isolation, read/write expectation, permission/sandbox/model/propagation assumptions or unknowns, tools/sources, validation evidence, and stop conditions. The packet is not authority evidence; do not assume parent state propagates.
+- Delegate writes only when the worker can establish invocation-bound evidence tying it to the original request or managed task, plus effective instructions, authority, permissions, sandbox, and workspace. A coordinator summary is insufficient. Otherwise keep it read-only and return a patch or artifact for the coordinator to apply. Keep pending consequential authority with the coordinator; narrow, return, or block uncertain work.
+- Assume workers share mutable state unless isolated. Parallelize independent work, never overlapping writes, and serialize dependent writers. Parallel writers require exclusive ownership, stable integration boundaries, suitable validation, and host-provided isolation or separately authorized worktrees/tasks. Isolation prevents races, not incompatible changes; retain results, reconcile, and verify the integrated state.
 
 ## Sensitive and External Actions
 
@@ -76,7 +85,7 @@ Authorization for a consequential, external, or Git action is exact to its resul
 - Treat warnings as failures. Do not suppress warnings, weaken tests, or change expected output merely to make checks pass.
 - Inspect the complete task-owned diff. As relevant, check scope, correctness, security, failure and resource handling, contracts, compatibility, concurrency, performance, tests, documentation, dependencies, generated files, schemas, and migrations.
 - Assess whether related instructions, documentation, examples, changelogs, manifests, lockfiles, or generated artifacts need updates. Change only what the requested behavior requires.
-- Delegate only sizeable, genuinely independent, parallelizable work. Do not delegate small tasks or use subagents merely to double-check your own work.
+- Apply the Delegation rules to implementation, validation, and review work.
 
 ## Human Review
 
