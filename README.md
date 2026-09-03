@@ -41,6 +41,14 @@ Local subagents, separate worktree sessions, managed cloud tasks, and hosted cod
 
 None of these harnesses automatically treats `README.md` as agent policy. OpenCode supports remote instruction URLs, but relying on them would make this policy less portable. Start a fresh session after changing instruction files and use each harness's inspection tools where available to confirm what loaded.
 
+## Plan Gate Setup
+
+The remote bootstrap supplies repository policy; it cannot override a genuinely higher-priority system, developer, or session rule. A controlling autonomy instruction should preserve applicable repository approval gates, for example:
+
+> Carry requested changes end-to-end after satisfying applicable repository approval gates. In interactive mode, if applicable repository instructions require presenting a plan and waiting for explicit user approval, stop at that checkpoint unless the applicable policy permits waiver and the direct user explicitly waives that named gate for the bounded result. Such approval or waiver grants no other action or effect.
+
+Authentically activated managed workflows can retain their recorded, asynchronous approval path. A conversational promise to wait is local to that session and is not a durable configuration change. After changing instructions or controlling-prompt configuration, start a fresh consuming session so rollout does not rely on an existing session retaining the update.
+
 ## Design
 
 The policy follows current model-vendor guidance:
@@ -58,7 +66,7 @@ Prompt instructions guide behavior; they are not a security boundary. Enforce ha
 
 Before publishing a policy change to `master`:
 
-1. Record the current known-good commit.
+1. Record the current published baseline and its known limitations.
 2. Review the exact policy diff and test the proposed content in isolated consumers from its pending branch, review artifact, or a local fixture.
 3. Exercise read-only work, routine edits, high-risk work, false and valid managed activation, dependency operations, Git authorization, dirty worktrees, review failures, and uncertain side effects.
 4. Verify that the mutable `master` URL resolves. Record tool and model versions, commands, results, and gaps. Do not claim managed compatibility until its lifecycle canaries pass.
