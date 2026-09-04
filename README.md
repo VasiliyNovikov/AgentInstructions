@@ -1,8 +1,10 @@
 # AgentInstructions
 
-A shared `AGENTS.md` for coding agents that aims to be safe, practical, and readable by humans. It is designed for frontier coding models such as [GPT-5.6 Sol](https://developers.openai.com/api/docs/models/gpt-5.6-sol) and [Claude Opus 5](https://platform.claude.com/docs/en/models/opus-5/overview) when used through OpenCode, GitHub Copilot, or OpenAI Codex.
+A shared `AGENTS.md` for coding agents that aims to be safe, practical, and readable by humans. It is designed for frontier coding models such as [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) and [Claude Opus 5](https://platform.claude.com/docs/en/models/opus-5/overview) when used through OpenCode, GitHub Copilot, or OpenAI Codex.
 
 The policy does not select a model, reasoning level, sandbox, or permission mode. Those remain harness and runtime settings.
+
+Model guidance was reviewed against vendor documentation on September 4, 2026. Documentation review does not establish model-behavior validation; no GPT-6 Astra or Opus 5 behavior evaluations were run for this update.
 
 ## Remote Bootstrap
 
